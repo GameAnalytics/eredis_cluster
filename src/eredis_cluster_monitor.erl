@@ -104,7 +104,8 @@ reload_slots_map(State) ->
 
 -spec get_cluster_slots([#node{}]) -> [[bitstring() | [bitstring()]]].
 get_cluster_slots([]) ->
-    throw({error,cannot_connect_to_cluster});
+    %% exit will be handled by eredis_cluster_pool:transaction/2
+    exit({error,cannot_connect_to_cluster});
 get_cluster_slots([Node|T]) ->
     case safe_eredis_start_link(Node#node.address, Node#node.port) of
         {ok,Connection} ->
